@@ -4,7 +4,7 @@
     $query      = mysqli_query($koneksi,("SELECT a.kode_prov, a.nama_prov, b.* FROM tb_kab_kota AS b
                                           INNER JOIN tb_prov AS a USING(kode_prov)
                                           WHERE kode_prov = '$prov'"));
-    $data       = mysqli_fetch_array($query);
+    $data_get       = mysqli_fetch_array($query);
 ?>
 <div class="alert alert-info" role="alert">
     <?php
@@ -16,7 +16,7 @@
     ?>
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <span style="font-size:20px;"><strong style="text-decoration:underline;font-size:23px;">INFORMASI</strong><br/><br/>
-        Pencarian berdasarakan Wilayah Provinsi <strong><?php echo $data['nama_prov']; ?></strong> dengan Kode Provinsi <strong><?php echo $data['kode_prov'] ?></strong><br/>
+        Pencarian berdasarakan Wilayah Provinsi <strong><?php echo $data_get['nama_prov']; ?></strong> dengan Kode Provinsi <strong><?php echo $data_get['kode_prov'] ?></strong><br/>
         Jumlah Puskesmas keseleruhan adalah <strong><?php echo $data1['jml_puskesmas'] ?></strong><br/>
         Jumlah Rumah Sakit keseleruhan adalah <strong><?php echo $data2['jml_rs'] ?></strong>
     </span>
@@ -94,7 +94,7 @@
         <h3 class="panel-title">TABEL KODIFIKASI KABUPATEN</h3>
         <?php if ($_SESSION['level'] == 'superadmin' OR 'admin') { ?>
         <div class="pull-right">
-            <a href="export/kabupaten_pencarian.php?kode_prov=<?php echo $data['kode_prov'] ?>" class="btn btn-info btn-sm"><span class="fa fa-th-large"></span> Export Excel</a>
+            <a href="export/kabupaten_pencarian.php?kode_prov=<?php echo $data_get['kode_prov'] ?>" class="btn btn-info btn-sm"><span class="fa fa-th-large"></span> Export Excel</a>
             <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#create_kabupaten"><span class="fa fa-pencil"></span> Input Data</a>
         </div>
         <?php } ?>
