@@ -67,7 +67,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
     $nestedData[] = '<td>
                          <center>
                              <a href="#edit_kabupaten" data-toggle="modal" data-id="'.$row['kode_kab'].'" style="font-size:12px;text-decoration:none;"><span class="label label-warning">Edit data</span></a>
-                             <a href="function/delete.php?aksi=del_kabupaten&kode_kab='.$row['kode_kab'].'" style="font-size:12px;text-decoration:none;"><span class="label label-warning">Delete data</span></a>
+                             <a onclick="return confirm(\'ingin menghapus data ?\')" href="function/delete.php?aksi=del_kabupaten&kode_kab='.$row['kode_kab'].'" style="font-size:12px;text-decoration:none;"><span class="label label-warning">Delete data</span></a>
                          </center>
                      </td>';
 
