@@ -130,11 +130,11 @@
         $numrow++; // Tambah 1 setiap kali looping
      }
 
-     $query1 = mysqli_query($koneksi,("SELECT SUM(jml_puskesmas) as jml_puskesmas from tb_kab_kota"));
+     $query1 = mysqli_query($koneksi,("SELECT SUM(jml_puskesmas) as jml_puskesmas from tb_kab_kota WHERE kode_prov = '$prov'"));
      $data1  = mysqli_fetch_array($query1);
      $excel->getActiveSheet()->setCellValue('F6', $data1['jml_puskesmas']);
 
-     $query2 = mysqli_query($koneksi,("SELECT SUM(jml_rs) as jml_rs from tb_kab_kota"));
+     $query2 = mysqli_query($koneksi,("SELECT SUM(jml_rs) as jml_rs from tb_kab_kota WHERE kode_prov = '$prov'"));
      $data2  = mysqli_fetch_array($query2);
      $excel->getActiveSheet()->setCellValue('G6', $data2['jml_rs']);
 
