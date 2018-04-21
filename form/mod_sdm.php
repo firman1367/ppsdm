@@ -1,3 +1,79 @@
+<?php
+    if (isset($_POST['cari-sdm'])) {
+        include ('form/cari_sdm.php');
+    }else{
+?>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">FILTER PENCARIAN</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Nama Provinsi</label>
+                <div class="col-md-8">
+                    <select class="form-control select" name="kode_prov" data-live-search="true" data-size="5">
+                        <option>-- Pilih --</option>
+                        <?php
+                            $query_prov  = mysqli_query($koneksi,("SELECT * FROM tb_prov ORDER BY nama_prov ASC"));
+                            foreach ($query_prov as $data_prov) {
+                        ?>
+                        <option value="<?php echo $data_prov['kode_prov'] ?>"><?php echo $data_prov['nama_prov'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Rumpun SDMK</label>
+                <div class="col-md-8">
+                    <select class="form-control select" name="rumpun_sdmk" data-live-search="true" data-size="5">
+                        <option>-- Pilih --</option>
+                        <?php
+                            $query_sdmk  = mysqli_query($koneksi,("SELECT * FROM tb_kodesdmk GROUP BY rumpun ASC"));
+                            foreach ($query_sdmk as $data_sdmk) {
+                        ?>
+                        <option value="<?php echo $data_sdmk['rumpun'] ?>"><?php echo $data_sdmk['rumpun'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Strata Pendidikan</label>
+                <div class="col-md-8">
+                    <select class="form-control select" name="strata_pendidikan" data-live-search="true" data-size="5">
+                        <option>-- Pilih --</option>
+                        <?php
+                            $query_strata  = mysqli_query($koneksi,("SELECT * FROM tb_kodedik GROUP BY kode_strata ASC"));
+                            foreach ($query_strata as $data_strata) {
+                        ?>
+                        <option value="<?php echo $data_strata['kode_strata'] ?>"><?php echo $data_strata['kode_strata'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Program StudiK</label>
+                <div class="col-md-8">
+                    <select class="form-control select" name="program_studi" data-live-search="true" data-size="5">
+                        <option>-- Pilih --</option>
+                        <?php
+                            $query_studi  = mysqli_query($koneksi,("SELECT * FROM tb_kodedik GROUP BY nama_dik ASC"));
+                            foreach ($query_studi as $data_studi) {
+                        ?>
+                        <option value="<?php echo $data_studi['nama_dik'] ?>"><?php echo $data_studi['nama_dik'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" name="cari-sdm" class="btn btn-primary btn-flat">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">TABEL SDM</h3>
@@ -233,3 +309,4 @@
         </div>
     </div>
 </div>
+<?php } ?>
