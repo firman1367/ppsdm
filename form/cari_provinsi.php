@@ -41,10 +41,10 @@
                 <?php
 
                     $query_grafik  = mysqli_query($koneksi,("SELECT a.kode_prov, a.nama_prov, SUM(b.jml_puskesmas) AS jml_puskesmas,
-                                                      SUM(b.jml_rs) AS jml_rs FROM tb_kab_kota AS b
-                                                      INNER JOIN tb_prov AS a USING(kode_prov)
-                                                      WHERE kode_prov = '$prov'
-                                                      GROUP BY a.kode_prov"));
+                                                             SUM(b.jml_rs) AS jml_rs FROM tb_kab_kota AS b
+                                                             INNER JOIN tb_prov AS a USING(kode_prov)
+                                                             WHERE kode_prov = '$prov'
+                                                             GROUP BY a.kode_prov"));
                     foreach($query_grafik as $data){
                 ?>
                     <tr>

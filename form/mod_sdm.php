@@ -59,7 +59,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label class="col-sm-3 control-label">Program Studi</label>
                 <div class="col-md-8">
                     <select class="form-control select" name="program_studi" data-live-search="true" data-size="5">
@@ -72,7 +72,7 @@
                         <?php } ?>
                     </select>
                 </div>
-            </div>
+            </div>-->
             <div class="form-group">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">

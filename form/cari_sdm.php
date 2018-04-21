@@ -3,12 +3,44 @@
     $prov           = $_POST['nama_prov'];
     $rumpun         = $_POST['rumpun_sdmk'];
     $kode_strata    = $_POST['strata_pendidikan'];
-    $nama_dik       = $_POST['program_studi'];
+    //$nama_dik       = $_POST['program_studi'];
 
-    $query      = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' AND strata_pendidikan = '$kode_strata' OR program_studi = '$nama_dik'"));
+    $query      = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' OR strata_pendidikan = '$kode_strata'"));
     $data_get   = mysqli_fetch_array($query);
 
 ?>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">GRAFIK</h3>
+    </div>
+    <div class="panel-body">
+        <div id="grafik"></div>
+        <table id="datatable" class="table table-bordered table-hover" style="display: #;">
+            <thead>
+                <tr class="active">
+                    <th></th>
+                    <th>PROGRAM STUDI</th>
+                    <th>STRATA PENDIDIKAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+
+                    $query_grafik  = mysqli_query($koneksi,("SELECT strata_pendidikan, COUNT(strata_pendidikan) AS total_strata, program_studi, COUNT(program_studi) AS total_studi FROM tb_sdm
+                                                             WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' OR strata_pendidikan = '$kode_strata'
+                                                             GROUP BY program_studi"));
+                    foreach($query_grafik as $data){
+                ?>
+                    <tr>
+                        <td><?php echo $data['program_studi'] ?></td>
+                        <td><?php echo $data['total_strata'] ?></td>
+                        <td><?php echo $data['total_studi'] ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 <div class="alert alert-info" role="alert">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <strong>
@@ -65,7 +97,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label class="col-sm-3 control-label">Program Studi</label>
                 <div class="col-md-8">
                     <select class="form-control select" name="program_studi" data-live-search="true" data-size="5">
@@ -78,7 +110,7 @@
                         <?php } ?>
                     </select>
                 </div>
-            </div>
+            </div>-->
             <div class="form-group">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -93,7 +125,7 @@
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <strong>
         <span style="font-size:12px;">PENCARIAN<br/>
-            <?php echo $prov ?>, <?php echo $rumpun ?>, <?php echo $kode_strata ?>, <?php echo $nama_dik ?>
+            <?php echo $prov ?>, <?php echo $rumpun ?>, <?php echo $kode_strata ?>
         </span>
     </strong>
 </div>
@@ -202,6 +234,76 @@
     </script>
 
     <!-- end modal -->
+
+    <!-- grafik -->
+
+    <script type="text/javascript">
+        var chart1; // globally available
+        $(document).ready(function() {
+            chart1 = new Highcharts.Chart({
+                data: {
+                    table: 'datatable'
+                },
+                chart: {
+                    renderTo: 'grafik',
+                    type: 'column'
+                },
+                title: {
+                    text: 'Grafik Puskesmas Dan Rumah Sakit Berdasarkan Provinsi'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Jumlah'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}</td>' + '<td> : </td>' +
+                        '<td style="padding:0"><b>{point.y:.f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.4,
+                        borderWidth: 0
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                dataLabels: {
+                    enabled: true,
+                    color: '#FFFFFF',
+                    align: 'center',
+                    format: '{point.y:.f}', // one decimal
+                    y: 3, // 10 pixels down from the top
+                    style: {
+                        fontSize: '15px',
+                        fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                {
+                dataLabels: {
+                    enabled: true,
+                    color: '#FFFFFF',
+                    align: 'center',
+                    format: '{point.y:.f}', // one decimal
+                    y: 3, // 10 pixels down from the top
+                    style: {
+                        fontSize: '15px',
+                        fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });
+        });
+    </script>
+
+    <!-- end grafik -->
 
     <!-- modal -->
     <div class="modal fade" id="create_sdm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
