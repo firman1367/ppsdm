@@ -3,6 +3,14 @@
         include ('form/cari_sdm.php');
     }else{
 ?>
+<div class="alert alert-info" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>
+        <span style="font-size:12px;">INFORMASI<br/>
+            *Nama Provinsi dan Rumpun SDMK wajib diisi
+        </span>
+    </strong>
+</div>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">FILTER PENCARIAN</h3>
@@ -12,8 +20,8 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Nama Provinsi</label>
                 <div class="col-md-8">
-                    <select class="form-control select" name="nama_prov" data-live-search="true" data-size="5">
-                        <option>-- Pilih --</option>
+                    <select class="form-control select" name="nama_prov" data-live-search="true" data-size="5" required="required">
+                        <option value="">-- Pilih --</option>
                         <?php
                             $query_prov  = mysqli_query($koneksi,("SELECT * FROM tb_prov ORDER BY nama_prov ASC"));
                             foreach ($query_prov as $data_prov) {
@@ -26,8 +34,8 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Rumpun SDMK</label>
                 <div class="col-md-8">
-                    <select class="form-control select" name="rumpun_sdmk" data-live-search="true" data-size="5">
-                        <option>-- Pilih --</option>
+                    <select class="form-control select" name="rumpun_sdmk" data-live-search="true" data-size="5" required="required">
+                        <option value="">-- Pilih --</option>
                         <?php
                             $query_sdmk  = mysqli_query($koneksi,("SELECT * FROM tb_kodesdmk GROUP BY rumpun ASC"));
                             foreach ($query_sdmk as $data_sdmk) {
@@ -41,7 +49,7 @@
                 <label class="col-sm-3 control-label">Strata Pendidikan</label>
                 <div class="col-md-8">
                     <select class="form-control select" name="strata_pendidikan" data-live-search="true" data-size="5">
-                        <option>-- Pilih --</option>
+                        <option value="">-- Pilih --</option>
                         <?php
                             $query_strata  = mysqli_query($koneksi,("SELECT * FROM tb_kodedik GROUP BY kode_strata ASC"));
                             foreach ($query_strata as $data_strata) {
@@ -52,10 +60,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Program StudiK</label>
+                <label class="col-sm-3 control-label">Program Studi</label>
                 <div class="col-md-8">
                     <select class="form-control select" name="program_studi" data-live-search="true" data-size="5">
-                        <option>-- Pilih --</option>
+                        <option value="">-- Pilih --</option>
                         <?php
                             $query_studi  = mysqli_query($koneksi,("SELECT * FROM tb_kodedik GROUP BY nama_dik ASC"));
                             foreach ($query_studi as $data_studi) {
@@ -287,7 +295,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-    						<label class="col-sm-3 control-label">Program StudiK</label>
+    						<label class="col-sm-3 control-label">Program Studi</label>
                             <div class="col-md-8">
                                 <select class="form-control select" name="program_studi" data-live-search="true" data-size="5">
                                     <?php
