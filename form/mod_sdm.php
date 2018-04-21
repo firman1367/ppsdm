@@ -12,13 +12,13 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Nama Provinsi</label>
                 <div class="col-md-8">
-                    <select class="form-control select" name="kode_prov" data-live-search="true" data-size="5">
+                    <select class="form-control select" name="nama_prov" data-live-search="true" data-size="5">
                         <option>-- Pilih --</option>
                         <?php
                             $query_prov  = mysqli_query($koneksi,("SELECT * FROM tb_prov ORDER BY nama_prov ASC"));
                             foreach ($query_prov as $data_prov) {
                         ?>
-                        <option value="<?php echo $data_prov['kode_prov'] ?>"><?php echo $data_prov['nama_prov'] ?></option>
+                        <option value="<?php echo $data_prov['nama_prov'] ?>"><?php echo $data_prov['nama_prov'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
