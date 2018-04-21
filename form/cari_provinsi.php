@@ -94,7 +94,7 @@
         <h3 class="panel-title">TABEL KODIFIKASI KABUPATEN</h3>
         <?php if ($_SESSION['level'] == 'superadmin' OR 'admin') { ?>
         <div class="pull-right">
-            <a href="export/kabupaten.php" class="btn btn-info btn-sm"><span class="fa fa-th-large"></span> Export Excel</a>
+            <a href="export/kabupaten_pencarian.php?kode_prov=<?php echo $data['kode_prov'] ?>" class="btn btn-info btn-sm"><span class="fa fa-th-large"></span> Export Excel</a>
             <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#create_kabupaten"><span class="fa fa-pencil"></span> Input Data</a>
         </div>
         <?php } ?>
