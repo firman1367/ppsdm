@@ -1,22 +1,28 @@
 <?php
-    if (isset($_POST['cari-provinsi'])) {
-        include ('form/cari_provinsi.php');
-    }else{
+
+    $prov       = $_POST['kode_prov'];
+    $query      = mysqli_query($koneksi,("SELECT a.kode_prov, a.nama_prov, b.* FROM tb_kab_kota AS b
+                                          INNER JOIN tb_prov AS a USING(kode_prov)
+                                          WHERE kode_prov = '$prov'"));
+    $data       = mysqli_fetch_array($query);
 ?>
 <div class="alert alert-info" role="alert">
     <?php
-        $query1 = mysqli_query($koneksi,("SELECT SUM(jml_puskesmas) as jml_puskesmas from tb_kab_kota"));
+        $query1 = mysqli_query($koneksi,("SELECT SUM(jml_puskesmas) as jml_puskesmas from tb_kab_kota WHERE kode_prov = '$prov'"));
         $data1  = mysqli_fetch_array($query1);
 
-        $query2 = mysqli_query($koneksi,("SELECT SUM(jml_rs) as jml_rs from tb_kab_kota"));
+        $query2 = mysqli_query($koneksi,("SELECT SUM(jml_rs) as jml_rs from tb_kab_kota WHERE kode_prov = '$prov'"));
         $data2  = mysqli_fetch_array($query2);
     ?>
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <span style="font-size:20px;"><strong>INFORMASI</strong><br/>
+    <span style="font-size:20px;"><strong style="text-decoration:underline;font-size:23px;">INFORMASI</strong><br/><br/>
+        Pencarian berdasarakan Wilayah Provinsi <strong><?php echo $data['nama_prov']; ?></strong> dengan Kode Provinsi <strong><?php echo $data['kode_prov'] ?></strong><br/>
         Jumlah Puskesmas keseleruhan adalah <strong><?php echo $data1['jml_puskesmas'] ?></strong><br/>
         Jumlah Rumah Sakit keseleruhan adalah <strong><?php echo $data2['jml_rs'] ?></strong>
     </span>
 </div>
+
+
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">GRAFIK</h3>
@@ -34,11 +40,12 @@
             <tbody>
                 <?php
 
-                    $query  = mysqli_query($koneksi,("SELECT a.kode_prov, a.nama_prov, SUM(b.jml_puskesmas) AS jml_puskesmas,
+                    $query_grafik  = mysqli_query($koneksi,("SELECT a.kode_prov, a.nama_prov, SUM(b.jml_puskesmas) AS jml_puskesmas,
                                                       SUM(b.jml_rs) AS jml_rs FROM tb_kab_kota AS b
                                                       INNER JOIN tb_prov AS a USING(kode_prov)
+                                                      WHERE kode_prov = '$prov'
                                                       GROUP BY a.kode_prov"));
-                    foreach($query as $data){
+                    foreach($query_grafik as $data){
                 ?>
                     <tr>
                         <td><?php echo $data['nama_prov'] ?></td>
@@ -50,6 +57,7 @@
         </table>
     </div>
 </div>
+
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">FILTER PENCARIAN</h3>
@@ -60,6 +68,7 @@
                 <label class="col-sm-3 control-label">Nama Provinsi</label>
                 <div class="col-md-8">
                     <select class="form-control select" name="kode_prov" data-live-search="true" data-size="5">
+                        <option>-- Pilih Provinsi --</option>
                         <?php
                             $query_prov  = mysqli_query($koneksi,("SELECT * FROM tb_prov ORDER BY nama_prov ASC"));
                             foreach ($query_prov as $data_prov) {
@@ -73,11 +82,13 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <button type="submit" name="cari-provinsi" class="btn btn-primary btn-flat">Submit</button>
+                    <a href="?page=mod_kabupaten" class="btn btn-primary btn-flat">Kembali</a>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">TABEL KODIFIKASI KABUPATEN</h3>
@@ -90,46 +101,49 @@
     </div>
     <div class="panel-body">
         <div class="table-responsive">
-            <table id="data_kabupaten" class="table table-bordered table-hover">
+            <table id="data" class="table table-bordered table-hover">
                 <thead>
                     <tr class="active">
-                        <th width="5%" class="text-center">No</th>
+                        <th width="2%" class="text-center">No</th>
                         <th width="10%" class="text-center">Kode Kabupaten</th>
                         <th width="15%" class="text-center">Nama Kabupaten</th>
                         <th width="10%" class="text-center">Nama Provinsi</th>
                         <th width="10%" class="text-center">Jumlah Puskesmas</th>
-                        <th width="10%" class="text-center">Jumlah RS</th>
+                        <th width="5%" class="text-center">Jumlah RS</th>
                         <?php if ($_SESSION['level'] == 'superadmin' OR 'admin') { ?>
                         <th class="text-center" width="10%" style="font-size:11px">Action</th>
                         <?php } ?>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    <?php
+
+                        $no     = 1;
+
+                        foreach($query as $data){
+
+                    ?>
+                    <tr>
+                        <td class="text-center"><?php echo $no++; ?></td>
+                        <td class="text-center"><?php echo $data['kode_kab'] ?></td>
+                        <td><?php echo $data['nama_kab'] ?></td>
+                        <td><?php echo $data['nama_prov'] ?></td>
+                        <td><?php echo $data['jml_puskesmas'] ?></td>
+                        <td><?php echo $data['jml_rs'] ?></td>
+                        <?php if ($_SESSION['level'] == 'superadmin' OR 'admin') { ?>
+                        <td>
+                            <center>
+                                <a href="#edit_kabupaten" data-toggle="modal" data-id="<?php echo $data['kode_kab']; ?>" style="font-size:12px;text-decoration:none;"><span class="label label-warning">Edit data</span></a>
+                                <a href="function/delete.php?aksi=del_kabupaten&kode_kab=<?php echo $data['kode_kab'] ?>" onClick="return confirm('ingin menghapus Kode Kabupaten <?php echo $data['kode_kab'] ?>?')" style="font-size:12px;text-decoration:none;"><span class="label label-warning">Delete data</span></a>
+                            </center>
+                        </td>
+                        <?php } ?>
+                    </tr>
+                    <?php } ?>
+                </tbody>
             </table>
         </div>
     </div>
-
-    <!-- server side -->
-    <script src="js/plugins/jquery/jquery.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        var dataTable = $('#data_kabupaten').DataTable( {
-            "iDisplayLength": 25,
-            "processing": true,
-            "serverSide": true,
-            "ajax":{
-                url :"form/data_kabupaten.php", // json datasource
-                type: "post",  // method  , by default get
-                error: function(){  // error handling
-                    $(".lookup-error").html("");
-                    $("#data_kabupaten").append('<tbody class="employee-grid-error"><tr><th colspan="7">No data found in the server</th></tr></tbody>');
-                    $("#data_kabupaten_processing").css("display","none");
-                }
-            }
-        } );
-    } );
-    </script>
-    <!-- end server side -->
 
     <!-- modal edit anggota-->
 
@@ -150,6 +164,7 @@
     </div>
 
     <!-- modal  -->
+    <script src="js/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
         $('#edit_kabupaten').on('show.bs.modal', function (e) {
@@ -200,7 +215,7 @@
                 },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.2,
+                        pointPadding: 0.4,
                         borderWidth: 0
                     }
                 },
@@ -215,7 +230,7 @@
                     format: '{point.y:.f}', // one decimal
                     y: 3, // 10 pixels down from the top
                     style: {
-                        fontSize: '10px',
+                        fontSize: '15px',
                         fontFamily: 'Verdana, sans-serif'
                         }
                     }
@@ -228,7 +243,7 @@
                     format: '{point.y:.f}', // one decimal
                     y: 3, // 10 pixels down from the top
                     style: {
-                        fontSize: '10px',
+                        fontSize: '15px',
                         fontFamily: 'Verdana, sans-serif'
                         }
                     }
@@ -288,14 +303,11 @@
     					</div>
                 </div>
                 <div class="modal-footer" style="text-align:left">
-                    <button type="submit" class="btn btn-primary btn-sm" style="margin-right:5px;">Submit</button>
-                    <button type="reset" class="btn btn-primary btn-sm">Reset</button>
+                    <button type="submit" class="btn btn-default btn-sm" style="margin-right:5px;">Submit</button>
+                    <button type="reset" class="btn btn-default btn-sm">Reset</button>
                 </div>
                     </form>
             </div>
         </div>
     </div>
 </div>
-<?php
-	}
-?>
