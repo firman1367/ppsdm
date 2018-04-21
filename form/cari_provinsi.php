@@ -4,7 +4,8 @@
     $query      = mysqli_query($koneksi,("SELECT a.kode_prov, a.nama_prov, b.* FROM tb_kab_kota AS b
                                           INNER JOIN tb_prov AS a USING(kode_prov)
                                           WHERE kode_prov = '$prov'"));
-    $data_get       = mysqli_fetch_array($query);
+    $data_get   = mysqli_fetch_array($query);
+
 ?>
 <div class="alert alert-info" role="alert">
     <?php
