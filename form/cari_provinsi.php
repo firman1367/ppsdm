@@ -243,7 +243,7 @@
                     format: '{point.y:.f}', // one decimal
                     y: 3, // 10 pixels down from the top
                     style: {
-                        fontSize: '15px',
+                        fontSize: '15spx',
                         fontFamily: 'Verdana, sans-serif'
                         }
                     }
