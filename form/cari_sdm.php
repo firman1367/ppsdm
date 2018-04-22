@@ -33,8 +33,8 @@
                 ?>
                     <tr>
                         <td><?php echo $data['program_studi'] ?></td>
-                        <td><?php echo $data['total_strata'] ?></td>
                         <td><?php echo $data['total_studi'] ?></td>
+                        <td><?php echo $data['total_strata'] ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -266,7 +266,7 @@
                 },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.4,
+                        pointPadding: 0.2,
                         borderWidth: 0
                     }
                 },
