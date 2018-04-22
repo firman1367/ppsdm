@@ -48,7 +48,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Strata Pendidikan</label>
                 <div class="col-md-8">
-                    <select class="form-control select" name="strata_pendidikan" data-live-search="true" data-size="5">
+                    <select class="form-control select" name="strata_pendidikan" data-live-search="true" data-size="5" required="required">
                         <option value="">-- Pilih --</option>
                         <?php
                             $query_strata  = mysqli_query($koneksi,("SELECT * FROM tb_kodedik GROUP BY kode_strata ASC"));

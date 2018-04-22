@@ -110,7 +110,7 @@
         <h3 class="panel-title">TABEL SDM</h3>
         <?php if ($_SESSION['level'] == 'superadmin' OR 'admin') { ?>
         <div class="pull-right">
-            <a href="export/sdm.php" class="btn btn-info btn-sm"><span class="fa fa-th-large"></span> Export Excel</a>
+            <a href="export/sdm_pencarian.php?nama_prov=<?php echo $data_get['nama_prov'] ?>&rumpun_sdmk=<?php echo $data_get['rumpun_sdmk'] ?>&strata_pendidikan=<?php echo $data_get['strata_pendidikan'] ?>" class="btn btn-info btn-sm"><span class="fa fa-th-large"></span> Export Excel</a>
             <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#create_sdm"><span class="fa fa-pencil"></span> Input Data</a>
         </div>
         <?php } ?>
