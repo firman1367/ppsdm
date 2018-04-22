@@ -7,7 +7,7 @@
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <strong>
         <span style="font-size:12px;">INFORMASI<br/>
-            *Nama Provinsi dan Rumpun SDMK wajib diisi
+            *Nama Provinsi, Rumpun SDMK dan Strata Pendidikan wajib diisi
         </span>
     </strong>
 </div>

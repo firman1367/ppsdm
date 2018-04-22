@@ -5,47 +5,23 @@
     $kode_strata    = $_POST['strata_pendidikan'];
     //$nama_dik       = $_POST['program_studi'];
 
-    $query      = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' OR strata_pendidikan = '$kode_strata'"));
+    $query      = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' AND strata_pendidikan = '$kode_strata'"));
     $data_get   = mysqli_fetch_array($query);
 
 ?>
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">GRAFIK</h3>
+        <h3 class="panel-title">GRAFIK SDM</h3>
     </div>
     <div class="panel-body">
         <div id="grafik"></div>
-        <table id="datatable" class="table table-bordered table-hover" style="display: #;">
-            <thead>
-                <tr class="active">
-                    <th></th>
-                    <th>PROGRAM STUDI</th>
-                    <th>STRATA PENDIDIKAN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-
-                    $query_grafik  = mysqli_query($koneksi,("SELECT strata_pendidikan, COUNT(strata_pendidikan) AS total_strata, program_studi, COUNT(program_studi) AS total_studi FROM tb_sdm
-                                                             WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' OR strata_pendidikan = '$kode_strata'
-                                                             GROUP BY program_studi"));
-                    foreach($query_grafik as $data){
-                ?>
-                    <tr>
-                        <td><?php echo $data['program_studi'] ?></td>
-                        <td><?php echo $data['total_studi'] ?></td>
-                        <td><?php echo $data['total_strata'] ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
     </div>
 </div>
 <div class="alert alert-info" role="alert">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <strong>
         <span style="font-size:12px;">INFORMASI<br/>
-            *Nama Provinsi dan Rumpun SDMK wajib diisi
+            *Nama Provinsi, Rumpun SDMK dan Strata Pendidikan wajib diisi
         </span>
     </strong>
 </div>
@@ -86,7 +62,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Strata Pendidikan</label>
                 <div class="col-md-8">
-                    <select class="form-control select" name="strata_pendidikan" data-live-search="true" data-size="5">
+                    <select class="form-control select" name="strata_pendidikan" data-live-search="true" data-size="5" required="required">
                         <option value="">-- Pilih --</option>
                         <?php
                             $query_strata  = mysqli_query($koneksi,("SELECT * FROM tb_kodedik GROUP BY kode_strata ASC"));
@@ -236,69 +212,54 @@
     <!-- end modal -->
 
     <!-- grafik -->
-
+   
     <script type="text/javascript">
         var chart1; // globally available
         $(document).ready(function() {
             chart1 = new Highcharts.Chart({
-                data: {
-                    table: 'datatable'
-                },
                 chart: {
                     renderTo: 'grafik',
-                    type: 'column'
+                    type: 'column',
                 },
                 title: {
-                    text: 'Grafik Puskesmas Dan Rumah Sakit Berdasarkan Provinsi'
+                    text: 'Grafik SDM '
+                },
+                xAxis: {
+                    categories: ['Program Studi']
                 },
                 yAxis: {
                     title: {
                         text: 'Jumlah'
                     }
                 },
-                tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}</td>' + '<td> : </td>' +
-                        '<td style="padding:0"><b>{point.y:.f}</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.2,
+                        pointPadding: 0.3,
                         borderWidth: 0
                     }
                 },
+                series:
+                [
+                    <?php
+                        $query  = mysqli_query($koneksi,("SELECT strata_pendidikan, program_studi, COUNT(program_studi) AS total_studi FROM tb_sdm
+                                                          WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' AND strata_pendidikan = '$kode_strata'
+                                                          GROUP BY program_studi"));
+                        while( $data = mysqli_fetch_array( $query))
+                        {
+                            $total  = $data['total_studi'];
+                            $program_studi = $data['program_studi'];
+                    ?>
+                        {
+                            name: "<?php echo $program_studi; ?>",
+                            data: [<?php echo $total; ?>]
+                        },
+                    <?php
+                        }
+                    ?>
+                ],
                 credits: {
                     enabled: false
                 },
-                series: [{
-                dataLabels: {
-                    enabled: true,
-                    color: '#FFFFFF',
-                    align: 'center',
-                    format: '{point.y:.f}', // one decimal
-                    y: 3, // 10 pixels down from the top
-                    style: {
-                        fontSize: '15px',
-                        fontFamily: 'Verdana, sans-serif'
-                        }
-                    }
-                },
-                {
-                dataLabels: {
-                    enabled: true,
-                    color: '#FFFFFF',
-                    align: 'center',
-                    format: '{point.y:.f}', // one decimal
-                    y: 3, // 10 pixels down from the top
-                    style: {
-                        fontSize: '15px',
-                        fontFamily: 'Verdana, sans-serif'
-                        }
-                    }
-                }]
             });
         });
     </script>
