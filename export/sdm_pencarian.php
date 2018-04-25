@@ -103,7 +103,7 @@
      $prov          = $_GET['nama_prov'];
      $rumpun        = $_GET['rumpun_sdmk'];
      $kode_strata   = $_GET['strata_pendidikan'];
-     $sql           = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' AND strata_pendidikan = '$kode_strata'"));
+     $sql           = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' AND strata_pendidikan = '$kode_strata' ORDER BY program_studi ASC"));
      while($data = mysqli_fetch_array($sql)){
 
         $excel->getActiveSheet()->setCellValue('A'.$numrow, $no)

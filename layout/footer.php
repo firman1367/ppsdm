@@ -30,7 +30,7 @@ $(function () {
     $("#all").DataTable();
     $('#data').DataTable({
         "paging": true,
-        "lengthChange": false,
+        "lengthChange": true,
         "searching": true,
         "ordering": false,
         "info": false,

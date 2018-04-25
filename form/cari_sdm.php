@@ -140,8 +140,9 @@
                 <tbody>
                     <?php
 
-                        $no     = 1;
-                        foreach($query as $data){
+                        $no         = 1;
+                        $query_tb   = mysqli_query($koneksi,("SELECT * FROM tb_sdm WHERE nama_prov = '$prov' AND rumpun_sdmk = '$rumpun' AND strata_pendidikan = '$kode_strata' ORDER BY program_studi ASC"));
+                        foreach($query_tb as $data){
 
                     ?>
                     <tr style="font-size:10px;">
