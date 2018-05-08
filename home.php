@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- header -->
+    <!-- headers -->
     <?php require_once('layout/header.php') ?>
     <!-- end header -->
 
